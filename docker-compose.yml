@@ -8,6 +8,10 @@ services:
     volumes:
       - data:/var/lib/flexibee
       - log:/var/log
+    environment:
+      LANG: cs_CZ.UTF-8
+      LANGUAGE: cs_CZ.UTF-8
+      LC_ALL: cs_CZ.UTF-8
 
 volumes:
   data:

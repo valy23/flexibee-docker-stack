@@ -1,1 +1,1 @@
-51 23 * * * postgres pg_dumpall | gzip > /var/lib/postgresql/backup.sql
+51 23 * * * postgres pg_dumpall | gzip > /var/lib/postgresql/backup.sql.gz
