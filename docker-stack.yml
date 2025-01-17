@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+  flexibee:
+    image: flexibee:2025.1.1
+    ports:
+      - target: 5434
+        published: 55434
+        mode: host
+    volumes:
+      - data:/var/lib
+      - log:/var/log
+    networks:
+      default:
+    environment:
+      LANG: cs_CZ.UTF-8
+      LANGUAGE: cs_CZ.UTF-8
+      LC_ALL: cs_CZ.UTF-8
+
+volumes:
+  data:
+  log:

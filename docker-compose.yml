@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  flexibee:
+    image: flexibee:2025.1.1
+    build:
+      context: ./
+      dockerfile: $PWD/Dockerfile
+    volumes:
+      - data:/var/lib/flexibee
+      - log:/var/log
+
+volumes:
+  data:
+  log:
