@@ -33,7 +33,7 @@ Níže je seznam konfiguračních souborů, které budete potřebovat upravit ne
 - **`cron-backup`**: Denně provádí dump celé databáze a ukládá jej do volume pro snadné zálohování.
 - **`default-flexibee`**: Konfigurace pro FlexiBee, která se kopíruje do `/etc/default/flexibee`.
 - **`docker-compose.yml`**: Zkontrolujte název a verzi image.
-- **`docker-stack.yml`**: Důkladně nastavte **volumes** pro perzistentní ukládání dat. Tato konfigurace je použita v produkci. Flexibee provozujeme na portu 55434.
+- **`docker-stack.yml`**: Důkladně nastavte **volumes** pro perzistentní ukládání dat. Tato konfigurace je použita v produkci. Flexibee provozujeme na portu 55434. Důležité je i nastavení `locales` na cs_CZ.UTF-8!
 - **`flexibee-server.xml`**: Konfigurace kopírovaná do `/etc/flexibee/flexibee-server.xml`.
 - **`pg_hba.conf`**: Konfigurace přístupu k PostgreSQL.
 - **`postgresql-flexibee.conf`**: Konfigurace PostgreSQL kopírovaná do `/etc/postgresql/13/flexibee/conf.d/postgresql-flexibee.conf`.
