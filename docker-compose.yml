@@ -1,13 +1,19 @@
 version: '3.5'
 services:
   flexibee:
-    image: flexibee:2025.1.1
+    image: flexibee:2025.6.4
+    ports:
+      - target: 5434
+        published: 55434
     build:
       context: ./
-      dockerfile: $PWD/Dockerfile
+      args:
+        FLEXIBEE_DEB: flexibee_2025.6.4_all.deb
     volumes:
-      - data:/var/lib/flexibee
+      - data:/var/lib
       - log:/var/log
+    networks:
+      default:
     environment:
       LANG: cs_CZ.UTF-8
       LANGUAGE: cs_CZ.UTF-8
