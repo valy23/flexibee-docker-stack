@@ -8,7 +8,7 @@ FlexiBee je účetní software, který vyniká dvěma klíčovými vlastnostmi:
 
 Ano, FlexiBee je možné provozovat v Dockeru v produkčním prostředí, což je ověřeno naší několikaletou praxí ve firmě **UX Fans s.r.o.** (a **Účtio.cz s.r.o.**) bez jakýchkoli problémů. 
 
-Tato konfigurace je navržena pro prostředí **Docker Swarm**, které využíváme na našich serverech, ale měla by být plně kompatibilní i s **Docker Compose**. FlexiBee a databáze **PostgreSQL 13** běží ve stejném kontejneru, což sice není ideální z pohledu dockerové filozofie (jeden proces na kontejner), ale provoz databáze v odděleném kontejneru by vyžadoval úpravy instalačních skriptů FlexiBee. Tyto úpravy by sice byly jednorázově proveditelné, ale komplikovaly by proces pravidelných aktualizací.
+Tato konfigurace je navržena pro prostředí **Docker Swarm**, které využíváme na našich serverech, ale je plně kompatibilní i s **Docker Compose**. FlexiBee a databáze **PostgreSQL 13** běží ve stejném kontejneru, což sice není ideální z pohledu dockerové filozofie (jeden proces na kontejner), ale provoz databáze v odděleném kontejneru by vyžadoval úpravy instalačních skriptů FlexiBee. Tyto úpravy by sice byly jednorázově proveditelné, ale komplikovaly by proces pravidelných aktualizací.
 
 ---
 

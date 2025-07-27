@@ -1,6 +1,7 @@
 FROM debian:12
 
 ENV DEBIAN_FRONTEND=noninteractive
+ARG FLEXIBEE_DEB
 
 # instalace zakladnich balicku
 RUN apt update && apt install -y wget gnupg locales locales-all supervisor apt-transport-https gpg cron
@@ -18,11 +19,11 @@ RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION
 RUN apt update 
 RUN apt install -y libtcl8.6 libtk-img libtk8.6 logrotate netbase postgresql-13 postgresql-client-13 postgresql-client-common postgresql-common sysstat tcl tcl-tls tcl8.6 tcllib tk tk8.6 ucf xz-utils vim postgresql-pltcl-13 xdg-utils temurin-11-jre
 
-# smazeme systemctl, protoze v Dockeruje je k nicemu a FlexiBee instalacni skript si podle tohoto souboru mysly, ze pouzivame systemd
+# smazeme systemctl, protoze v image je k nicemu a FlexiBee instalacni skript si podle tohoto souboru mysli, ze pouzivame systemd
 RUN rm -rf /usr/bin/systemctl
 # Zde zadej nazev instalacniho souboru
-COPY flexibee_2025.1.1_all.deb /
-RUN dpkg -i  ./flexibee_2025.1.1_all.deb
+COPY $FLEXIBEE_DEB /
+RUN dpkg -i  ./$FLEXIBEE_DEB
 
 COPY default-flexibee /etc/default/flexibee
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
@@ -34,7 +35,7 @@ COPY cron-backup /etc/cron.d/cron-backup
 RUN rm -rf /etc/postgresql/13/main
 RUN apt clean
 # instalacni soubor muzeme po uspesne instalaci smazat, aby zbytecne nezabiral misto v image
-RUN rm -rf ./flexibee_2025.1.1_all.deb
+RUN rm -rf ./$FLEXIBEE_DEB
 
 EXPOSE 5434
 
