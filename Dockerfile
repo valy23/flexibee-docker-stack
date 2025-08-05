@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG FLEXIBEE_DEB
 
 # instalace zakladnich balicku
-RUN apt update && apt install -y wget gnupg locales locales-all supervisor apt-transport-https gpg cron
+RUN apt update && apt install -y wget gnupg locales locales-all supervisor apt-transport-https gpg cron procps
 RUN wget -qO - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
@@ -31,6 +31,8 @@ COPY postgresql-flexibee.conf /etc/postgresql/13/flexibee/conf.d/postgresql-flex
 COPY flexibee-server.xml /etc/flexibee/flexibee-server.xml
 COPY pg_hba.conf /etc/postgresql/13/flexibee/pg_hba.conf
 COPY cron-backup /etc/cron.d/cron-backup
+COPY on-stop.sh /
+RUN chmod +x /on-stop.sh
 # smazeme defaultni PostgreSQL cluster, k nicemu ho nepotrebujeme
 RUN rm -rf /etc/postgresql/13/main
 RUN apt clean
@@ -39,4 +41,4 @@ RUN rm -rf ./$FLEXIBEE_DEB
 
 EXPOSE 5434
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
