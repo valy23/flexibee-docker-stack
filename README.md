@@ -36,7 +36,7 @@ Níže je seznam konfiguračních souborů, které budete potřebovat upravit ne
 - **`docker-stack.yml`**: Důkladně nastavte **volumes** pro perzistentní ukládání dat. Tato konfigurace je použita v produkci. Flexibee provozujeme na portu 55434. Důležité je i nastavení `locales` na cs_CZ.UTF-8!
 - **`flexibee-server.xml`**: Konfigurace kopírovaná do `/etc/flexibee/flexibee-server.xml`.
 - **`pg_hba.conf`**: Konfigurace přístupu k PostgreSQL.
-- **`postgresql-flexibee.conf`**: Konfigurace PostgreSQL kopírovaná do `/etc/postgresql/13/flexibee/conf.d/postgresql-flexibee.conf`.
+- **`postgresql-flexibee.conf`**: Konfigurace PostgreSQL kopírovaná do `/etc/postgresql/<verze>/flexibee/conf.d/postgresql-flexibee.conf`.
 - **`supervisord.conf`**: `supervisord` zajišťuje spuštění FlexiBee a `cron` procesu.
 
 ---
@@ -99,10 +99,37 @@ Flexibee
 tail -f /var/log/flexibee.log 
 ```
 
-PostgreSQL
+PostgreSQL (číslo ve jménu souboru odpovídá `PG_VERSION`)
 ```bash
-tail -f /var/log/postgresql/postgresql-13-flexibee.log 
+tail -f /var/log/postgresql/postgresql-17-flexibee.log 
 ```
+
+---
+
+### 8. Verze PostgreSQL a obnova záloh firem
+
+Verzi PostgreSQL v obrazu určuje build argument **`PG_VERSION`** (výchozí `17`).
+ABRA Flexi na Linuxu podporuje **13 až 17**.
+
+**Zálohu firmy lze obnovit jen na stejné nebo novější verzi PostgreSQL, než na jaké
+byla pořízena.** Záloha obsahuje archiv `pg_dump` a zpětně se převést nedá. Obnova
+zálohy z novějšího serveru skončí chybou 400 a v `flexibee.log`:
+
+```
+pg_restore: chyba nepodporovaná verze (1.16) v hlavičce souboru
+```
+
+Číslo je verze formátu archivu, ne verze PostgreSQL:
+
+| Formát archivu | Zapsal pg_dump z |
+|---|---|
+| 1.14 | PostgreSQL 12–15 |
+| 1.15 | PostgreSQL 16 |
+| 1.16 | PostgreSQL 17 a 18 |
+
+**Pozor při zvyšování `PG_VERSION` u existující instalace:** ve volume `data` zůstávají
+data starého clusteru, novější PostgreSQL je bez konverze nespustí a výměna image
+nemigruje nic. Je nutná migrace dat — `pg_dumpall` na staré verzi a import na nové.
 
 ---
 *Autor: Tomáš Valoušek, UX Fans s.r.o., 17. 1. 2025*

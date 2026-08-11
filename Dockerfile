@@ -2,6 +2,8 @@ FROM debian:12
 
 ENV DEBIAN_FRONTEND=noninteractive
 ARG FLEXIBEE_DEB
+# Verze PostgreSQL. ABRA Flexi na Linuxu podporuje 13 az 17.
+ARG PG_VERSION=17
 
 # instalace zakladnich balicku
 RUN apt update && apt install -y wget gnupg locales locales-all supervisor apt-transport-https gpg cron procps
@@ -17,7 +19,7 @@ RUN echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION
 
 # instalace PostgreSQL a Java (Temurin) a TCL, TK (Flexibee vyzauje k behu)
 RUN apt update 
-RUN apt install -y libtcl8.6 libtk-img libtk8.6 logrotate netbase postgresql-13 postgresql-client-13 postgresql-client-common postgresql-common sysstat tcl tcl-tls tcl8.6 tcllib tk tk8.6 ucf xz-utils vim postgresql-pltcl-13 xdg-utils temurin-11-jre
+RUN apt install -y libtcl8.6 libtk-img libtk8.6 logrotate netbase postgresql-$PG_VERSION postgresql-client-$PG_VERSION postgresql-client-common postgresql-common sysstat tcl tcl-tls tcl8.6 tcllib tk tk8.6 ucf xz-utils vim postgresql-pltcl-$PG_VERSION xdg-utils temurin-11-jre
 
 # smazeme systemctl, protoze v image je k nicemu a FlexiBee instalacni skript si podle tohoto souboru mysli, ze pouzivame systemd
 RUN rm -rf /usr/bin/systemctl
@@ -27,14 +29,14 @@ RUN dpkg -i  ./$FLEXIBEE_DEB
 
 COPY default-flexibee /etc/default/flexibee
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY postgresql-flexibee.conf /etc/postgresql/13/flexibee/conf.d/postgresql-flexibee.conf
+COPY postgresql-flexibee.conf /etc/postgresql/$PG_VERSION/flexibee/conf.d/postgresql-flexibee.conf
 COPY flexibee-server.xml /etc/flexibee/flexibee-server.xml
-COPY pg_hba.conf /etc/postgresql/13/flexibee/pg_hba.conf
+COPY pg_hba.conf /etc/postgresql/$PG_VERSION/flexibee/pg_hba.conf
 COPY cron-backup /etc/cron.d/cron-backup
 COPY on-stop.sh /
 RUN chmod +x /on-stop.sh
 # smazeme defaultni PostgreSQL cluster, k nicemu ho nepotrebujeme
-RUN rm -rf /etc/postgresql/13/main
+RUN rm -rf /etc/postgresql/$PG_VERSION/main
 RUN apt clean
 # instalacni soubor muzeme po uspesne instalaci smazat, aby zbytecne nezabiral misto v image
 RUN rm -rf ./$FLEXIBEE_DEB
