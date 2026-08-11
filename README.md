@@ -129,7 +129,7 @@ pg_restore: chyba nepodporovaná verze (1.16) v hlavičce souboru
 
 **Pozor při zvyšování `PG_VERSION` u existující instalace:** ve volume `data` zůstávají
 data starého clusteru, novější PostgreSQL je bez konverze nespustí a výměna image
-nemigruje nic. Je nutná migrace dat — `pg_dumpall` na staré verzi a import na nové.
+nemigruje nic. Postup je v [update_database.md](update_database.md).
 
 ---
 *Autor: Tomáš Valoušek, UX Fans s.r.o., 17. 1. 2025*
