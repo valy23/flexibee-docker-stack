@@ -9,6 +9,8 @@ services:
       context: ./
       args:
         FLEXIBEE_DEB: flexibee_2025.6.4_all.deb
+        # Podporovano 13-17.
+        PG_VERSION: 17
     volumes:
       - data:/var/lib
       - log:/var/log
